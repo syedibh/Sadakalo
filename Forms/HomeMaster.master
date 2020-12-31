@@ -1,0 +1,382 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="HomeMaster.master.cs" Inherits="Forms_HomeMaster" %>
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title id="title" runat="server"></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script src="../jquery-ui-1.11.4/jquery-ui.js"></script>
+    <link href="../jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" />
+   <script src="../vendor/select2/select2.min.js"></script>
+    <link href="../vendor/select2/select2.min.css" rel="stylesheet" />
+   
+    <script type="text/javascript">
+
+        //$(document).ready(function () {
+        //    $('.Select2').select2({
+        //        placeholder: "Select a Subject",
+        //        allowClear: true
+        //    });
+        //});
+
+        $(function () {
+            $('.Select2').select2({
+                placeholder: "Select a Subject",
+                allowClear: true
+            });
+        });
+
+        $(function () {
+            $(".TransactionDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1964:2030',
+            })
+        });
+
+        $(function () {
+            $(".voucherDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1964:2030',
+            })
+        });
+
+
+        $(function () {
+            $("#txtToDate").datepicker({
+                defaultDate: "+2d",
+                beforeShow: function () {
+                    $(this).datepicker('option', 'minDate', $('#txtFromDate').val());
+                    // if ($('#txtFromDate').val() === '') $(this).datepicker('option', 'minDate', 2);
+                },
+                dateFormat: "M-dd-yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1964:2030',
+
+            });
+        });
+
+        function initMoreButton(s, e) {
+            $(s.GetMainElement()).find(".more-info").click(function () {
+                if (s.InCallback()) return;
+                var $btn = $(this);
+                s.GetRowValues($btn.attr("data-key"), 'FirstName;LastName;Title;Notes', function (values) {
+                    detailsModal.SetHeaderText(values[0] + " " + values[1] + " - " + values[2]);
+                    detailsModal.SetContentHtml(values[3]);
+                    detailsModal.Show();
+                });
+            });
+        }
+
+
+    </script>
+    <style>
+        .navbar-inverse {
+            background-color: #07794a !important;
+            border-radius: 0px !important;
+            height: 4rem !important;
+        }
+
+            .navbar-inverse .navbar-nav > li > a {
+                color: #e5ff0f !important;
+                font-size: 1.5rem !important;
+                font-weight: bold !important;
+                height: 4.5rem !important;
+            }
+            .navbar-inverse .navbar-nav>.open>a
+            {
+                background-color:#0782a7 !important;
+            }
+
+        .navbar-nav {
+            margin: -0.6rem !important;
+            padding-left: 0rem !important;
+        }
+        .navbar {
+            margin: -0.6rem !important;
+            padding-left: 0rem !important;
+            min-height: 40px !important;
+           margin-bottom: 0px !important;
+        }
+
+        body {
+            background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+        }
+
+        .btn-success{
+            width: 9.5rem !important;
+            font-size: 1.5rem !important;
+        }
+
+        .btn-new {
+            width: 4.5rem !important;
+            font-size: 1.3rem !important;
+            height: 2.5rem !important;
+            border-radius: 0.5rem !important;
+        }
+
+        .form-control {
+            width:260px!important;
+            height:30px!important;
+            margin-top: 0.5rem !important;
+        }
+
+        .td-space
+        {
+            width:11rem ;
+        }
+         .td-space2
+        {
+            width:5rem ;
+        }
+
+        .bg-primary {
+            font-size: 2.4rem;
+            height: 4rem;
+            font-weight: bold;
+            text-align: center;
+            background-color: #07e69c !important;
+            color: #1f0775 !important;
+            border-radius: 1rem;
+        }
+
+        .bg-info {
+            background-color: #07794a;
+            text-align: center !important;
+            margin-top: 8rem !important;
+            color: #edf400 !important;
+            font-size: 2rem !important;
+        }
+
+        .dropdown-menu {
+            background-color: #bed9a2 !important;
+            font-size: 1.5rem !important;
+            font-weight: bold !important;
+        }
+
+        .col-md-3 {
+            width: 25%;
+            font-size: 1.3rem !important;
+        }
+
+        .col-sm-3 {
+            width: 25%;
+            font-size: 1.3rem !important;
+        }
+
+        .input {
+            padding: 1.2rem !important;
+        }
+
+        .header {
+            height: 5rem;
+            background-color: white;
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: deepskyblue;
+            font-family: gli;
+        }
+
+        .header-font {
+            font-size: 1.5rem;
+            font-weight: bold;
+            Color: yellow;
+            font-family: Glyphicons Halflings;
+            padding-right: 1rem;
+        }
+          table
+        {
+            margin-left:5px;
+        }
+       .table-space2
+        {
+         margin-left:6rem;
+        }
+
+       .table-space
+        {
+         margin-left:18rem;
+        }
+
+        .mGrid th
+        {
+            padding: 4px 2px;
+            color: black;
+            background: url(grd_head1.png) activecaption repeat-x 50% top;
+            border-left: solid 0px #525252;
+            border-left-color: rgb(82, 82, 82);
+            font-size: 12px;
+            /*text-align: center;*/
+            border-color: silver;
+            height: 15px;
+        }
+        .mGrid td 
+        { 
+            padding: 0px !important;
+            border: solid 1px #c1c1c1; 
+            color: #717171;
+            font-size: 12px !important;
+            text-align:center;
+
+        }
+
+        .td{
+            text-align:right;
+            padding-right:6px;
+        }
+        .select2-container
+        {
+            margin-top:0.3rem !important;
+        }
+        .panel-Search
+        {
+            background-color:royalblue;
+            height:4rem;
+            color:white;
+        }
+        .panel-popup
+        {
+           background-color:white; 
+           display:none;
+           width:125rem;
+           height:65rem;
+        }
+        .text-align-r
+        {
+            text-align:right !important;
+        }
+
+         .text-align-c
+        {
+            text-align:center !important;
+        }
+           .text-align-l
+        {
+            text-align:left !important;
+        }
+
+    </style>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+         <asp:ScriptManager ID="ScriptManager1" EnablePartialRendering="false" runat="server"></asp:ScriptManager>
+         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+        <div id="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="heading" class="header">
+                        <asp:Image ID="logo" runat="server" style=" height: 5.3rem;  width: 8rem;" /><asp:Label ID="lblHeaderTitle" runat="server"></asp:Label>
+                    </div>
+                </div>
+
+            </div>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="nav navbar-nav">
+                                <li><a href="WelcomePage.aspx">Home</a></li>
+                                <li class="dropdown" id="iShowRoom" runat="server"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Show Room <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="iSales" runat="server"><a href="frmSales.aspx">Sales</a></li>
+                                        <li id="iSalesReturn" runat="server"><a href="frmSalesReturn.aspx">Sales Return</a></li>
+                                        <li id="iTransferInSR" runat="server"><a href="frmTransferIN.aspx">Transfer-IN</a></li>
+                                        <li id="iTransferOutSR" runat="server"><a href="frmTransferOUT.aspx">Transfer-OUT</a></li>
+                                        <li id="iReportSR" runat="server"><a href="#">Report</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown" id="iHeadOffice" runat="server"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Head Office<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="iReceivedSupplier" runat="server"><a href="frmPurchase.aspx">Received From Supplier</a></li>
+                                        <li id="iReturnSupplier" runat="server"><a href="frmPurchaseReturn.aspx">Return To Supplier</a></li>
+                                        <li id="iTransferInHO" runat="server"><a href="frmTransferIN.aspx">Transfer-IN</a></li>
+                                        <li id="iTransferOutHO" runat="server"><a href="frmTransferOUT.aspx">Transfer-OUT</a></li>
+                                        <li id="iAdjustment" runat="server"><a href="#">Adjustment</a></li>
+                                        <li id="iUpdateBalance" runat="server"><a href="#">Update Closing Balance</a></li>
+                                        <li id="iListOfItem" runat="server"><a href="frmListOfItem.aspx">List Of Item</a></li>
+
+
+                                         <li id="iOrder" runat="server"><a href="Order.aspx">Order</a></li>
+                                         <li id="iOrderReceived" runat="server"><a href="OrderReceived.aspx">Received against order</a></li>
+
+
+
+
+
+                                        <li id="iReportHO" runat="server"><a href="ReportListCrystal.aspx">Report</a></li>
+                                    </ul>
+                                </li>
+                                
+                                <li class="dropdown" id="iAccounts" runat="server"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Accounts<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="iDrVoucher" runat="server"><a href="AccDebitVoucher.aspx">Debit Voucher</a></li>
+                                        <li id="iCrVoucher" runat="server"><a href="AccCreditVoucher.aspx">Credit Voucher</a></li>
+                                        <li id="iContraVoucher" runat="server"><a href="AccContraVoucher.aspx">Contra Voucher</a></li>
+                                        <li id="iJvVoucher" runat="server"><a href="AccJournalVoucher.aspx">Journal Voucher</a></li>
+                                        <li id="iAccountsReport" runat="server"><a href="#">Report</a></li>
+                                        <li id="iMasterChartOfAccounts" runat="server"><a href="AccMasterChartOfAccounts.aspx">Master Chart of acccounts</a></li>
+                                        <li id="iBranchChartOfAccounts" runat="server"><a href="AccBranchChartOfAccounts.aspx">Branch Chart of acccounts</a></li>
+                                                                                               
+                                        
+                                        
+                                    </ul>
+                                </li>
+                                
+                                
+                                <li id="iAdministrator" runat="server" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administrations <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="iBranchPermision" runat="server"><a href="AdminBrPermission.aspx">Branch Permision</a></li>
+                                        <li id="iNewUser" runat="server"><a href="AdminNewUser.aspx">New User</a></li>
+                                        <li id="iPermision" runat="server"><a href="AdminPermission.aspx">Permision</a></li>
+                                        <li id="iOption" runat="server"><a href="#">Option</a></li>
+                                        <li id="iPassword" runat="server"><a href="AdminPasswordChange.aspx">Password Change</a></li>
+                                        <li id="iBackupDB" runat="server"><a href="#">Backup Database</a></li>
+                                        <li id="iAbout" runat="server"><a href="#">About</a></li>
+                                    </ul>
+                                </li>
+                                <li id="iChangBranch" runat="server"><a href="AdminBranchChange.aspx">Change Branch</a></li>
+                         <%--       </ul>
+                     </div>
+                        <div class="col-sm-4">
+                            <ul class="nav navbar-nav">--%>
+                                <li><span runat="server" class="header-font" style="margin-left:20rem">Branch :</span><asp:Label ID="lblBranch" runat="server" CssClass="header-font"></asp:Label><span runat="server" class="glyphicon glyphicon-user" style="margin-top: 1.8rem; font-size: 1.4rem; font-weight: bold; color: yellow;"></span>
+                                    <asp:Label ID="lblUserName" runat="server" class="header-font"></asp:Label>
+                                <li><a href="../Login.aspx"><span class="glyphicon glyphicon-log-in header-font">Logout</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+        <div class="container-fluid">
+            <div class="row">
+        <div id="footer">
+            <asp:Panel ID="Panelfooter" runat="server" CssClass=" bg-info">
+                <asp:Label ID="lblfooter" runat="server" Text="All Right Reserved"> </asp:Label><asp:Label ID="lblFooterMsg" runat="server"></asp:Label>
+            </asp:Panel>
+        </div>
+      </div>
+       </div>  
+               </ContentTemplate>
+             </asp:UpdatePanel>
+    </form>
+</body>
+</html>
